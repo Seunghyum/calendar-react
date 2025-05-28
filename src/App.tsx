@@ -1,12 +1,13 @@
 import { useState } from "react";
 import CalendarGrid from "./components/CalendarGrid";
 import { addMonths, getMonth, startOfMonth, subMonths } from "date-fns";
+import { useLocalstorage } from "./hooks/useLocalstorage";
 
 function App() {
   const [currentDate, setCurrentDate] = useState(startOfMonth(new Date()));
-  const [schedules, setSchedules] = useState<{
+  const [schedules, setSchedules] = useLocalstorage<{
     [key: string]: { title: string }[];
-  }>({});
+  }>("schedules", {});
 
   const addSchedule = (dateStr: string, title: string) => {
     setSchedules((prev) => ({
