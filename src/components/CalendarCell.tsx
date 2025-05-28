@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef } from "react";
 import { format, isToday } from "date-fns";
 
 interface CalendarCellProps {
@@ -16,12 +16,12 @@ export default function CalendarCell({
   onAdd,
   onDelete,
 }: CalendarCellProps) {
-  const [newTitle, setNewTitle] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const handleAdd = () => {
-    if (newTitle) {
-      onAdd(format(date, "yyyy-MM-dd"), newTitle);
-      setNewTitle("");
+    if (inputRef.current?.value) {
+      onAdd(format(date, "yyyy-MM-dd"), inputRef.current.value);
+      inputRef.current.value = "";
     }
   };
 
@@ -58,8 +58,7 @@ export default function CalendarCell({
       {!disabled && (
         <>
           <input
-            value={newTitle}
-            onChange={(e) => setNewTitle(e.target.value)}
+            ref={inputRef}
             placeholder="+ 일정"
             style={{ width: "100%" }}
           />
